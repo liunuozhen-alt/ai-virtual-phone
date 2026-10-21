@@ -1,5 +1,11 @@
 .next
 .next/
+.open-next
+.open-next/
+.wrangler
+.wrangler/
+.dev.vars
+cloudflare-env.d.ts
 node_modules
 node_modules/
 out

@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ai-virtual-phone",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-09-01",
+  // nodejs_compat：本项目服务端用了 Buffer / node:crypto（PBKDF2 密码哈希）、web-push 等
+  // Node API，必须开。nodejs_compat_populate_process_env 让 process.env 能读到
+  // wrangler vars / secrets——lib/self-hosting.ts、lib/server/* 全部按 process.env 取配置。
+  "compatibility_flags": ["nodejs_compat", "nodejs_compat_populate_process_env"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  },
+  // keep_vars：避免每次 wrangler deploy 把面板里手动加的普通变量清掉。
+  "keep_vars": true,
+  // 单机模式必须在构建期就是 false（NEXT_PUBLIC_* 会被内联进前端包），
+  // 这里同时作为运行时值，保证 isSelfHostedModeEnabled() 读到 false。
+  "vars": {
+    "NEXT_PUBLIC_SELF_HOSTED_MODE": "false"
+  }
+}
